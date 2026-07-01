@@ -1,8 +1,8 @@
-# DFA Workshop — Full-Stack Refactor
+# DFA Workshop — Full-Stack 
 
 I created this workshop to help students and builders turn raw data into clear, meaningful, and actionable insights through design. In a world full of data, making sense of it is just as important as collecting it. Through my work in Design for America, I’ve seen how communicating data insights effectively can lead to definitive impact and efficient solutions. 
 
-This project is a complete full-stack refactor of that core material. To help my peers learn both data engineering and solid software architecture, I took the original content and split it into a clean, decoupled full-stack system.
+This project is a complete full-stack project with a Java Spring Boot backend. To help my peers learn both data engineering and solid software architecture.
 
 * **`backend/`** — A solid Spring Boot REST API (Java 17, Spring Data JPA, H2 in-memory DB).
 * **`frontend/`** — A lightweight, independent client (HTML/CSS/JS) that dynamically talks to the API.
