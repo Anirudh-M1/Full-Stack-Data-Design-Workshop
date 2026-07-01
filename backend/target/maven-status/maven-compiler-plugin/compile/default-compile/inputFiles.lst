@@ -1,0 +1,14 @@
+/Users/anirudhm/Documents/dfa-workshop/backend/src/main/java/com/dfa/workshop/WorkshopApplication.java
+/Users/anirudhm/Documents/dfa-workshop/backend/src/main/java/com/dfa/workshop/controller/WorkshopController.java
+/Users/anirudhm/Documents/dfa-workshop/backend/src/main/java/com/dfa/workshop/dto/CodeSnippetDTO.java
+/Users/anirudhm/Documents/dfa-workshop/backend/src/main/java/com/dfa/workshop/dto/WorkshopMapper.java
+/Users/anirudhm/Documents/dfa-workshop/backend/src/main/java/com/dfa/workshop/dto/WorkshopSectionDTO.java
+/Users/anirudhm/Documents/dfa-workshop/backend/src/main/java/com/dfa/workshop/exception/ApiError.java
+/Users/anirudhm/Documents/dfa-workshop/backend/src/main/java/com/dfa/workshop/exception/GlobalExceptionHandler.java
+/Users/anirudhm/Documents/dfa-workshop/backend/src/main/java/com/dfa/workshop/exception/ResourceNotFoundException.java
+/Users/anirudhm/Documents/dfa-workshop/backend/src/main/java/com/dfa/workshop/model/CodeSnippet.java
+/Users/anirudhm/Documents/dfa-workshop/backend/src/main/java/com/dfa/workshop/model/WorkshopSection.java
+/Users/anirudhm/Documents/dfa-workshop/backend/src/main/java/com/dfa/workshop/repository/CodeSnippetRepository.java
+/Users/anirudhm/Documents/dfa-workshop/backend/src/main/java/com/dfa/workshop/repository/WorkshopSectionRepository.java
+/Users/anirudhm/Documents/dfa-workshop/backend/src/main/java/com/dfa/workshop/service/WorkshopService.java
+/Users/anirudhm/Documents/dfa-workshop/backend/src/main/java/com/dfa/workshop/service/WorkshopServiceImpl.java

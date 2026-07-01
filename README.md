@@ -46,3 +46,42 @@ The original frontend was pretty monolithic, so I spent some time modularizing i
 ```bash
 cd backend
 mvn spring-boot:run
+```
+
+### Backend URLs
+
+- **Main API Endpoint:**  
+  http://localhost:8080/api/v1/sections
+
+- **Error Handling Test:**  
+  http://localhost:8080/api/v1/sections/99
+
+  > Use this endpoint to verify the clean **404 JSON error response** instead of the default white-label error page.
+
+- **H2 Database Console:**  
+  http://localhost:8080/h2-console
+
+  Use the following JDBC URL to log in:
+
+  ```text
+  jdbc:h2:mem:workshopdb
+  ```
+
+---
+
+## 2. Launch the Frontend
+
+Because the frontend makes asynchronous `fetch` calls, modern web browsers will block it if you open `index.html` directly (for example, by double-clicking it) due to CORS policies.
+
+Instead, serve the frontend using a lightweight local development server.
+
+Run the following commands:
+
+```bash
+cd frontend
+python3 -m http.server 5500
+```
+
+Once the server is running, open your browser and navigate to:
+
+http://localhost:5500
