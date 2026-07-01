@@ -1,60 +1,48 @@
-DFA Workshop — Full-Stack Refactor
-This project splits the original standalone workshop into a clean, decoupled full-stack architecture.
+# DFA Workshop — Full-Stack Refactor
 
-backend/ — Spring Boot REST API (Java 17, Spring Data JPA, H2 in-memory database).
+I created this workshop to help students and builders turn raw data into clear, meaningful, and actionable insights through design. In a world full of data, making sense of it is just as important as collecting it. Through my work in Design for America, I’ve seen how communicating data insights effectively can lead to definitive impact and efficient solutions. 
 
-frontend/ — Lean static client (HTML/CSS/JS) decoupled from the backend.
+This project is a complete full-stack refactor of that core material. To help my peers learn both data engineering and solid software architecture, I took the original content and split it into a clean, decoupled full-stack system.
 
-Backend Architecture & Layering
-The backend is built with strict separation of concerns to ensure testability and maintainability. Controllers never interact with the database layers directly.
+* **`backend/`** — A solid Spring Boot REST API (Java 17, Spring Data JPA, H2 in-memory DB).
+* **`frontend/`** — A lightweight, independent client (HTML/CSS/JS) that dynamically talks to the API.
 
-model/: WorkshopSection and CodeSnippet JPA entities maintaining a @OneToMany / @ManyToOne relationship.
+---
 
-dto/: WorkshopSectionDTO, CodeSnippetDTO, and a WorkshopMapper. This ensures the API layer never directly exposes raw database entities.
+## Why the Backend Architecture Makes Sense
 
-repository/: WorkshopSectionRepository and CodeSnippetRepository extending JpaRepository.
+I built this with a strict separation of concerns so we don't leak database logic into the client or mix business logic with our endpoints. It serves as a blueprint for how information should be structured, visualized, and understood in a real-world application.
 
-service/: Core business logic encapsulated in a WorkshopService interface and WorkshopServiceImpl implementation.
+* **`model/`**: Houses `WorkshopSection` and `CodeSnippet` as JPA entities, mapped out with a `@OneToMany` / `@ManyToOne` relationship.
+* **`dto/`**: Used `WorkshopSectionDTO`, `CodeSnippetDTO`, and a custom `WorkshopMapper` here. This keeps our raw database entities hidden from the API layer entirely.
+* **`repository/`**: Clean `WorkshopSectionRepository` and `CodeSnippetRepository` layers extending `JpaRepository` to handle standard CRUD operations.
+* **`service/`**: This is where the actual business logic lives (`WorkshopService` interface and its `WorkshopServiceImpl`). The controllers never talk directly to the repositories.
+* **`controller/`**: A slim `@RestController` that acts strictly as a traffic cop for our REST endpoints.
+* **`exception/`**: Set up a centralized global exception handler using `@ControllerAdvice`. If someone passes a bad ID or a resource isn't found, it returns a clean, structured `ApiError` JSON payload instead of blowing up the client with a massive, messy stack trace.
+* **`resources/`**: Houses `application.properties` and a `data.sql` file. The SQL script automatically seeds the H2 database on startup with our actual workshop content (*Setup & Libraries, Python Basics, Your First Chart, Real Data, Final Visualization*).
 
-controller/: A thin @RestController layer exposing clean REST endpoints.
+### The Endpoints
+* `GET /api/v1/sections` — Grabs all available workshop sections.
+* `GET /api/v1/sections/{id}` — Grabs a specific section by its ID.
+* `GET /api/v1/tracks/{trackId}` — Grabs sections filtered by specific tracks.
 
-exception/: Centralized error handling via @ControllerAdvice (GlobalExceptionHandler). Unhandled exceptions or missing resources map to structured JSON payloads (ApiError) rather than leaking raw stack traces to the client.
+---
 
-resources/: Includes application.properties configuration and a data.sql script to automatically seed the H2 database on startup with the live workshop content (Setup & Libraries, Python Basics, Your First Chart, Real Data, Final Visualization).
+## Cleaning Up the Frontend
 
-REST Endpoints
-GET /api/v1/sections — Fetches all workshop sections.
+The original frontend was pretty monolithic, so I spent some time modularizing it and clearing out the technical debt:
 
-GET /api/v1/sections/{id} — Fetches a specific section by ID.
+* **Separated Concerns**: Pulled all the inline styles out into `styles.css` and moved all the execution logic over to `app.js`. Now, `index.html` is just a clean, semantic skeleton.
+* **Nuked Dead Code**: Found a legacy, completely unused navigation script block (`goHome`/`goAbout`) hanging out in the old file and deleted it to keep things tidy. Only the real, working UI wiring (`window.goHome`/`window.goTo`) remains.
+* **Going Dynamic**: The `app.js` script hits `GET /api/v1/sections` as soon as the page loads to dynamically grab and render the labels right from our backend. I also baked in a local fallback array, so if the API isn't running, the static frontend still gracefully works standalone.
 
-GET /api/v1/tracks/{trackId} — Fetches sections filtered by track.
+---
 
-Frontend Refactor
-The frontend was refactored away from a monolithic single-file structure into modern, maintainable assets:
+## How to Run It Locally
 
-Separation of Concerns: Extracted all inline styles into styles.css and all execution logic into app.js, leaving index.html as a clean, semantic markup shell.
+> **Heads Up**: Make sure you're connected to the internet the first time you run this so Maven can pull down all the initial dependencies from Maven Central.
 
-Dead Code Elimination: Cleaned up a redundant, unused navigation script block (goHome/goAbout) that was sitting legacy in the original file, ensuring only the active UI wiring (window.goHome/window.goTo) remains.
-
-Dynamic Data Fetching: app.js is configured to hit GET /api/v1/sections on load to dynamically populate section labels from the Spring Boot API. It includes a graceful local fallback so the static page remains functional even if the backend is offline.
-
-Local Setup & Running
-Note: Because this requires pulling down dependencies from Maven Central, ensure you have an active network connection for the initial build.
-
-1. Spin up the Backend
-Bash
+### 1. Spin up the Backend
+```bash
 cd backend
 mvn spring-boot:run
-2. Verify the Services
-API Root: http://localhost:8080/api/v1/sections
-
-Error Handling Check: http://localhost:8080/api/v1/sections/99 (Should return a clean 404 JSON payload, not a white-label stack trace).
-
-H2 Console: http://localhost:8080/h2-console (JDBC URL: jdbc:h2:mem:workshopdb)
-
-Future Scope & Production Considerations
-To keep the scope of this refactor focused on core architecture, a few production-level features were intentionally left for the next iteration:
-
-Media Assets & Transcripts: Narrator subtitle transcripts (SUBS) and audio assets should ideally be moved to an external blob storage solution (or served as static assets) mapped to a relational Transcript entity, rather than being bundled in the frontend.
-
-Security: For a public-facing, read-only content API, authentication was omitted to keep things lightweight. In a production environment, Spring Security would be integrated to lock down write/delete endpoints.
